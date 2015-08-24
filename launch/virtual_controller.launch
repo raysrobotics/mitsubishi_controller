@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<launch>
+    <node pkg="virtual_robot" type="virtual_robot" name="mitsubishi_controller" output="screen">
+        <rosparam param="joint_names">
+            ["j1", "j2", "j3", "j4", "j5", "j6"]
+        </rosparam>
+        <param name="set_power_down_service" value="/mitsubishi_controller/set_drive_power"/>
+
+        <param name="allow_joint_states" value="true"/>
+        <param name="allow_robot_status" value="true"/>
+        <param name="allow_path_actionlib" value="true"/>
+        <param name="allow_stop_motion" value="true"/>
+
+        <remap from="~joint_states" to="/mitsubishi_controller/joint_states"/>
+    </node>
+
+    <node pkg="topic_tools" type="relay" name="relay_joint_state" ns="mitsubishi_controller"
+          args="joint_states /joint_states"/>
+
+</launch>
