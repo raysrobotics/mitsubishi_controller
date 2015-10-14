@@ -65,6 +65,7 @@ void MitsubishiJointState::check_deadline() {
         return;
     }
     if (timer_deadline.expires_at() <= boost::asio::deadline_timer::traits_type::now()) {
+        ROS_WARN_STREAM("Deadline expired for joint state streamer.");
         stop();
     }
     timer_deadline.async_wait(boost::bind(&MitsubishiJointState::check_deadline, this));

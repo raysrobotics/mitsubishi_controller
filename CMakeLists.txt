@@ -14,6 +14,7 @@ include_directories(
 
 add_executable(tcptest
     src/tcptest.cpp
+    src/MitsubishiCommander.cpp
 )
 target_link_libraries(tcptest
     ${catkin_LIBRARIES}
