@@ -35,6 +35,10 @@ public:
      *  \return number of written lines or -1 on error */
     int write_trajectory(const trajectory_msgs::JointTrajectory &traj);
 
+    /** \brief Wait until the program \e pname does not finish execution.
+     *  \return true if successfully completed, false on error */
+    bool wait_for_programme_completion(const std::string& pname, double period = 0.1);
+
     /** \brief Start joint streamer programme on the controller side */
     bool start_joint_streamer();
 
@@ -56,10 +60,6 @@ private:
 
     /** \brief Check that point \p is in the controller joint limits given the order of joints specified in \e indices*/
     bool check_point_limits(const trajectory_msgs::JointTrajectoryPoint &p, const std::vector<size_t> &indices) const;
-
-    /** \brief Wait until the program \e pname does not finish execution.
-     *  \return true if successfully completed, false on error */
-    bool wait_for_programme_completion(const std::string& pname, double period = 0.1);
 
 private:
     boost::asio::io_service io_service;

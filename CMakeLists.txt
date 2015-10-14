@@ -3,7 +3,7 @@ project(mitsubishi_controller)
 
 add_definitions(-std=c++11)
 
-find_package(catkin REQUIRED roscpp)
+find_package(catkin REQUIRED roscpp actionlib)
 
 catkin_package()
 
@@ -12,11 +12,12 @@ include_directories(
     include
 )
 
-add_executable(tcptest
-    src/tcptest.cpp
+add_executable(mitsubishi_action_server
+    src/mitsubishi_action_server.cpp
     src/MitsubishiCommander.cpp
+    src/MitsubishiActionServer.cpp
 )
-target_link_libraries(tcptest
+target_link_libraries(mitsubishi_action_server
     ${catkin_LIBRARIES}
 )
 

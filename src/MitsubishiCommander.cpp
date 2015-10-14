@@ -20,10 +20,10 @@ bool MitsubishiCommander::execute_cmd(const std::string &cmd, int n1, int n2) {
 }
 
 std::string MitsubishiCommander::execute_cmd_res(const std::string &cmd, int n1, int n2) {
-    ROS_INFO_STREAM("Writing: " << (std::to_string(n1) + ";" + std::to_string(n2) + ";" + cmd));
+    ROS_DEBUG_STREAM("Writing: " << (std::to_string(n1) + ";" + std::to_string(n2) + ";" + cmd));
     write_line(std::to_string(n1) + ";" + std::to_string(n2) + ";" + cmd);
     auto res = read_at_least(3);
-    ROS_INFO_STREAM("Result: " << res);
+    ROS_DEBUG_STREAM("Result: " << res);
     return res;
 }
 
@@ -189,7 +189,7 @@ bool MitsubishiCommander::start_joint_streamer() {
     auto suc(true);
     suc &= execute_cmd("OPEN=");
     suc &= execute_cmd("CNTLON");
-    suc &= execute_cmd("SLOTINIT");
+    execute_cmd("SLOTINIT");
     suc &= execute_cmd("RUNMAIN;1");
     suc &= wait_for_programme_completion("MAIN");
     return suc;
