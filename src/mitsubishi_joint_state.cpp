@@ -4,7 +4,6 @@
  *     Author: Vladimir Petrik <petrivl3@fel.cvut.cz>
  */
 
-
 #include <ros/ros.h>
 #include <mitsubishi_controller/MitsubishiJointState.h>
 

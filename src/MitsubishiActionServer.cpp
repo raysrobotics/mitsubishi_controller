@@ -13,10 +13,14 @@ MitsubishiActionServer::MitsubishiActionServer() :
 }
 
 bool MitsubishiActionServer::start() {
+
+    std::string ip, port;
+    node.param<std::string>("ip", ip, "192.168.0.20");
+    node.param<std::string>("port", port, "10002");
     try {
-        mc.connect("192.168.0.20", "10002");
+        mc.connect(ip, port);
         if (!mc.start_joint_streamer()) {
-            ROS_ERROR_STREAM("Cannot start joint streamer");
+            ROS_ERROR_STREAM("Cannot start joint trajectory streamer");
             return false;
         }
     } catch (std::exception &e) {

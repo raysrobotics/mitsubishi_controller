@@ -12,6 +12,8 @@
 
     <node pkg="mitsubishi_controller" type="mitsubishi_action_server" name="mitsubishi_controller" output="screen">
         <remap from="~joint_states" to="/mitsubishi_controller/joint_states"/>
+        <param name="ip" value="192.168.0.20"/>
+        <param name="port" value="10002"/>
     </node>
 
 </launch>

@@ -7,7 +7,16 @@
  *    Server (controller) program, in our case placed from main program into the slot 2:
  *
  *    FileName: JS
- *    //todo copy JS program into comment
+        Open "COM4:" As #1
+        *LOOP: Print #1,Str$(J_Curr.J1);";";
+        Print #1,Str$(J_Curr.J2);";";
+        Print #1,Str$(J_Curr.J3);";";
+        Print #1,Str$(J_Curr.J4);";";
+        Print #1,Str$(J_Curr.J5);";";
+        Print #1,Str$(J_Curr.J6)
+        Dly 0.2
+        GoTo *LOOP
+        End
  *
  */
 
