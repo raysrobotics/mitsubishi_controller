@@ -10,10 +10,16 @@
 #include <boost/algorithm/string.hpp>
 
 MitsubishiJointState::MitsubishiJointState(const std::string &ip, const std::string &port,
-                                           boost::asio::io_service &io_service) : stopped(false), socket(io_service),
+                                           boost::asio::io_service &io_service) : nh("~"), stopped(false),
+                                                                                  socket(io_service),
                                                                                   timer_deadline(io_service),
                                                                                   timer_check_ros(io_service) {
     using boost::asio::ip::tcp;
+
+    if (!nh.getParam("joint_names", joint_names)) {
+        ROS_INFO_STREAM("Joint Names are not specified, using defaults");
+        joint_names = {"j1", "j2", "j3", "j4", "j5", "j6"};
+    }
     pub_joint_state = nh.advertise<sensor_msgs::JointState>("joint_states", 1);
     timer_deadline.async_wait(boost::bind(&MitsubishiJointState::check_deadline, this));
     timer_check_ros.expires_from_now(boost::posix_time::milliseconds(TIMER_CHECK_ROS_MS));
@@ -124,7 +130,7 @@ void MitsubishiJointState::handle_read(const boost::system::error_code &ec) {
     js.position = vals;
     js.effort.resize(vals.size(), 0.0);
     js.velocity.resize(vals.size(), 0.0);
-    js.name = {"j1", "j2", "j3", "j4", "j5", "j6"};
+    js.name = joint_names;
     js.header.stamp = ros::Time::now();
     pub_joint_state.publish(js);
 }

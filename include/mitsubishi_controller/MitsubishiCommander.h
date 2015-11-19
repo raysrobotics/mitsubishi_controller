@@ -61,11 +61,19 @@ private:
     /** \brief Check that point \p is in the controller joint limits given the order of joints specified in \e indices*/
     bool check_point_limits(const trajectory_msgs::JointTrajectoryPoint &p, const std::vector<size_t> &indices) const;
 
+public:
+    /** \brief Joint limits in radians */
+    std::vector<double> limits_min, limits_max;
+
+    /** \brief Joint names read from the parameter server or j1/j2/.../j6 by default */
+    std::vector<std::string> joint_names;
+
 private:
     boost::asio::io_service io_service;
     boost::asio::ip::tcp::socket socket;
     boost::asio::deadline_timer deadline;
     boost::asio::streambuf input_buffer;
+
 
 };
 

@@ -17,6 +17,24 @@ bool MitsubishiActionServer::start() {
     std::string ip, port;
     node.param<std::string>("ip", ip, "192.168.0.20");
     node.param<std::string>("port", port, "10002");
+
+    if (!node.getParam("joint_names", mc.joint_names)) {
+        ROS_INFO_STREAM("Joint Names are not specified, using defaults");
+        mc.joint_names = {"j1", "j2", "j3", "j4", "j5", "j6"};
+    }
+
+    if (!node.getParam("limits_min", mc.limits_min)) {
+        const auto to_rad = M_PI / 180.0;
+        mc.limits_min = {-170.0 * to_rad, -92.0 * to_rad, -129.0 * to_rad, -160.0 * to_rad, -120.0 * to_rad,
+                         -360.0 * to_rad};
+    }
+
+    if (!node.getParam("limits_max", mc.limits_max)) {
+        const auto to_rad = M_PI / 180.0;
+        mc.limits_max = {170.0 * to_rad, 135.0 * to_rad, 166.0 * to_rad, 160.0 * to_rad, 120.0 * to_rad,
+                         360.0 * to_rad};
+    }
+
     try {
         mc.connect(ip, port);
         if (!mc.start_joint_streamer()) {

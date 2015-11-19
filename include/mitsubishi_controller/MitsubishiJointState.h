@@ -60,6 +60,9 @@ private:
     ros::NodeHandle nh;
     ros::Publisher pub_joint_state;
 
+    /** \brief Joint names read from the parameter server or j1/j2/.../j6 by default */
+    std::vector<std::string> joint_names;
+
     /** \brief Indicate that communication has been stopped */
     bool stopped;
 

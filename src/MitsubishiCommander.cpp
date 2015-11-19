@@ -135,9 +135,8 @@ int MitsubishiCommander::write_trajectory(const trajectory_msgs::JointTrajectory
 
 
 std::vector<size_t> MitsubishiCommander::get_indices_of_joints(const trajectory_msgs::JointTrajectory &traj) const {
-    const auto jnames = std::vector<std::string>({"j1", "j2", "j3", "j4", "j5", "j6"});
     std::vector<size_t> indices;
-    for (const auto &jname : jnames) {
+    for (const auto &jname : joint_names) {
         auto pos = find(traj.joint_names.begin(), traj.joint_names.end(), jname);
         if (pos == traj.joint_names.end()) {
             ROS_WARN_STREAM("Cannot find joint " << jname << " in the trajectory.");
@@ -147,7 +146,7 @@ std::vector<size_t> MitsubishiCommander::get_indices_of_joints(const trajectory_
         auto posi = distance(traj.joint_names.begin(), pos);
         indices.push_back(posi);
     }
-    if (indices.size() != jnames.size()) {
+    if (indices.size() != joint_names.size()) {
         ROS_WARN_STREAM("Invalid number of joints in the trajectory.");
         indices.clear();
     }
@@ -156,11 +155,6 @@ std::vector<size_t> MitsubishiCommander::get_indices_of_joints(const trajectory_
 
 bool MitsubishiCommander::check_point_limits(const trajectory_msgs::JointTrajectoryPoint &p,
                                              const std::vector<size_t> &indices) const {
-    const auto to_rad = M_PI / 180.0;
-    const auto limits_min = std::vector<double>{-170.0 * to_rad, -92.0 * to_rad, -129.0 * to_rad, -160.0 * to_rad,
-                                                -120.0 * to_rad, -360.0 * to_rad};
-    const auto limits_max = std::vector<double>{170.0 * to_rad, 135.0 * to_rad, 166.0 * to_rad, 160.0 * to_rad,
-                                                120.0 * to_rad, 360.0 * to_rad};
     for (int i = 0; i < indices.size(); ++i) {
         auto value = p.positions[indices[i]]; // value of the i-th joint
         if ((value < limits_min[i]) || (value > limits_max[i])) {
